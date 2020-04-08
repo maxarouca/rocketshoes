@@ -5,26 +5,31 @@ export const Container = styled.div`
   padding: 30px;
   background: #fff;
   border-radius: 4px;
+  text-align: center;
+
+  h3 {
+    margin-bottom: 40px;
+  }
 
   footer {
     display: flex;
     margin-top: 30px;
     justify-content: space-between;
     align-items: center;
+  }
 
-    button {
-      background: #7159c1;
-      color: #fff;
-      border: 0;
-      border-radius: 4px;
-      padding: 12px 20px;
-      font-weight: bold;
-      text-transform: uppercase;
-      transition: background 0.2s;
+  button {
+    background: #7159c1;
+    color: #fff;
+    border: 0;
+    border-radius: 4px;
+    padding: 12px 20px;
+    font-weight: bold;
+    text-transform: uppercase;
+    transition: background 0.2s;
 
-      &:hover {
-        background: ${darken(0.03, '#7159c1')};
-      }
+    &:hover {
+      background: ${darken(0.03, '#7159c1')};
     }
   }
 `;

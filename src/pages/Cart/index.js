@@ -9,18 +9,19 @@ import {
 import { Container, ProductTable, Total } from './styles';
 import * as CartActions from '../../store/modules/cart/actions';
 import { formatPrice } from '../../util/formatPrice';
+import { Link } from 'react-router-dom';
 
 export default function Cart() {
   const cart = useSelector(state =>
     state.cart.map(product => ({
       ...product,
-      subtotal: formatPrice(product.price * product.amount),
+      subtotal: formatPrice(product.followers * product.amount),
     }))
   );
   const total = useSelector(state =>
     formatPrice(
       state.cart.reduce((totalSum, product) => {
-        return totalSum + product.price * product.amount;
+        return totalSum + product.followers * product.amount;
       }, 0)
     )
   );
@@ -28,11 +29,26 @@ export default function Cart() {
   const dispatch = useDispatch();
 
   function increment(product) {
-    dispatch(CartActions.updateAmountRequest(product.id, product.amount + 1));
+    dispatch(
+      CartActions.updateAmountRequest(product.login, product.amount + 1)
+    );
   }
 
   function decrement(product) {
-    dispatch(CartActions.updateAmountRequest(product.id, product.amount - 1));
+    dispatch(
+      CartActions.updateAmountRequest(product.login, product.amount - 1)
+    );
+  }
+
+  if (cart.length === 0) {
+    return (
+      <Container>
+        <h3>Nenhum produto no carrinho</h3>
+        <Link to="/">
+          <button type="button">Voltar a Página Principal</button>
+        </Link>
+      </Container>
+    );
   }
 
   return (
@@ -50,12 +66,12 @@ export default function Cart() {
 
         <tbody>
           {cart.map(product => (
-            <tr>
+            <tr key={product.id}>
               <td>
-                <img src={product.image} alt={product.title} />
+                <img src={product.avatar_url} alt={product.name} />
               </td>
               <td>
-                <strong>{product.title}</strong>
+                <strong>{product.name}</strong>
                 <span>{product.priceFormatted}</span>
               </td>
               <td>
@@ -84,7 +100,7 @@ export default function Cart() {
                 <button
                   type="button"
                   onClick={() =>
-                    dispatch(CartActions.removeFromCart(product.id))
+                    dispatch(CartActions.removeFromCart(product.login))
                   }
                 >
                   <MdDelete size={20} color="#7159c1" />

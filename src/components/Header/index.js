@@ -1,18 +1,18 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { MdShoppingBasket } from 'react-icons/md';
 import { useSelector } from 'react-redux';
 
-import { Container, Cart } from './styles';
-import logo from '../../assets/images/logo.svg';
+import { Container, LogoContainer, Cart } from './styles';
+import logo from '../../assets/images/cargo_logo.png';
 
 export default function Header() {
   const cartItens = useSelector(state => state.cart);
   return (
     <Container>
-      <Link to="/">
+      <LogoContainer to="/">
         <img src={logo} alt="Rocket Shoes" />
-      </Link>
+        <h1>Store</h1>
+      </LogoContainer>
 
       <Cart to="/cart">
         <div>

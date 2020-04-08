@@ -4,11 +4,12 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import { ProductList } from './styles';
 import api from '../../services/api';
-import { formatPrice } from '../../util/formatPrice';
 import * as CartActions from '../../store/modules/cart/actions';
+import Loading from '../../components/Loading';
 
 export default function Home() {
-  const [products, setProducts] = useState([]);
+  const [members, setMembers] = useState([]);
+  const [loading, setLoading] = useState(true);
   const amount = useSelector(state =>
     state.cart.reduce((sumAmount, product) => {
       sumAmount[product.id] = product.amount;
@@ -18,35 +19,34 @@ export default function Home() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    async function loadProducts() {
-      const response = await api.get('products');
+    async function loadMembers() {
+      const response = await api.get('orgs/react-brasil/members');
 
-      const data = response.data.map(product => ({
-        ...product,
-        priceFormatted: formatPrice(product.price),
-      }));
-
-      setProducts(data);
+      setMembers(response.data);
+      setLoading(false);
     }
-    loadProducts();
+    loadMembers();
   }, []);
 
-  function handleAddProduct(id) {
-    dispatch(CartActions.addToCartRequest(id));
+  function handleAddProduct(member) {
+    dispatch(CartActions.addToCartRequest(member));
+  }
+
+  if (loading) {
+    return <Loading />;
   }
 
   return (
     <ProductList>
-      {products.map(product => (
-        <li key={String(product.id)}>
-          <img src={product.image} alt={product.title} />
-          <strong>{product.title}</strong>
-          <span>{product.priceFormatted}</span>
+      {members.map(member => (
+        <li key={String(member.id)}>
+          <img src={member.avatar_url} alt={member.login} />
+          <strong>{member.login}</strong>
 
-          <button type="button" onClick={() => handleAddProduct(product.id)}>
+          <button type="button" onClick={() => handleAddProduct(member.login)}>
             <div>
               <MdAddShoppingCart size={16} color="#fff" />
-              {amount[product.id] || 0}
+              {amount[member.id] || 0}
             </div>
 
             <span>ADICIONAR AO CARRINHO</span>

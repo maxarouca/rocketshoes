@@ -9,6 +9,28 @@ export const Container = styled.header`
   margin: 50px 0;
 `;
 
+export const LogoContainer = styled(Link)`
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+
+  &:hover {
+    opacity: 0.7;
+  }
+
+  h1 {
+    color: #fff;
+    &:hover {
+      text-decoration: none;
+    }
+  }
+
+  img {
+    width: 200px;
+    margin-right: 5px;
+  }
+`;
+
 export const Cart = styled(Link)`
   display: flex;
   align-items: center;
